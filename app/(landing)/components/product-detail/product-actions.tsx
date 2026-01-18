@@ -8,9 +8,15 @@ import {
 } from "react-icons/fi";
 import Button from "../ui/button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const ProductActions = () => {
+  const {push} = useRouter();
   const [qty, setQty] = useState(1);
+
+  const Checkout =() => {
+
+  }
 
   const incrementQty = () => {
     setQty(prev => prev + 1);
@@ -58,7 +64,7 @@ const ProductActions = () => {
       {/* Checkout */}
       <Button
         variant="dark"
-        className="w-full h-14 flex items-center justify-center gap-3 text-base font-medium rounded-md"
+        className="w-full h-14 flex items-center justify-center gap-3 text-base font-medium rounded-md" onClick={() => push("/checkout")}
       >
         Checkout Now
         <FiArrowRight size={20} />

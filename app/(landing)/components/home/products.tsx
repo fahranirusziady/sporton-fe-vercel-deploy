@@ -21,7 +21,7 @@ const ProductsSection = () => {
       </h2>
       <div className="grid grid-cols-4 gap-5">
         {productList.map((product, index) => (
-          <Link href="#" key={index}>
+          <Link href={`/product/${product.name}`} key={index}>
             <div className="p-1.5 bg-white hover:drop-shadow-xl duration-300">
               <div className="bg-primary-light aspect-square w-full flex justify-center items-center relative">
                 <Image 

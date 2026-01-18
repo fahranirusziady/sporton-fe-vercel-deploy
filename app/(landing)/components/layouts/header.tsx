@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <header>
       <div className="container mx-auto py-7 flex justify-between items-center gap-10">
-        
+        <Link href="/">      
         {/* Logo */}
         <Image
           src="/images/logo.svg"
@@ -20,7 +20,7 @@ const Header = () => {
           width={127}
           height={30}
         />
-
+        </Link>
         {/* Navigation */}
         <nav className="flex gap-44 font-medium">
           <Link

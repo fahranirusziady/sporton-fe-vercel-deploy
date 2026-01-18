@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { FiTrash2, FiArrowRight, FiCreditCard } from "react-icons/fi";
 
@@ -5,13 +7,19 @@ import { cartList } from "../ui/cart-popup";
 import Button from "../ui/button";
 import priceFormatter from "@/app/utils/price-formatter";
 import CardWithHeader from "../ui/card-with-header";
+import { useRouter } from "next/navigation";
 
 function CartItems() {
+  const {push} = useRouter();
   // ✅ hitung total harga
   const totalPrice = cartList.reduce(
     (total, item) => total + item.price * item.qty,
     0
   );
+
+  const payment = () => {
+
+  }
 
   return (
     <CardWithHeader title="Cart Items">
@@ -64,7 +72,7 @@ function CartItems() {
 
         <Button
           variant="dark"
-          className="w-full flex items-center justify-center gap-2"
+          className="w-full flex items-center justify-center gap-2" onClick={() => push("/payment")}
         ><FiCreditCard /> Proceed to Payment </Button>
       </div>
     </CardWithHeader>

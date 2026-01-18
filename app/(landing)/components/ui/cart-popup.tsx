@@ -1,7 +1,10 @@
+"use client";
+
 import priceFormatter from "@/app/utils/price-formatter";
 import Image from "next/image";
 import Button from "./button";
 import { FiArrowRight, FiTrash2 } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 export const cartList = [
   { name: "SportsOn Product 1", category: "Running", price: 450000, qty: 2, imgUrl: "product-1.png" },
@@ -12,8 +15,13 @@ export const cartList = [
 ];
 
 const CartPopup = () => {
+const {push} = useRouter();
  const totalPrice = cartList.reduce ((total, item) => total + item.price * item.qty, 0)
 
+
+const handleCheckout = () => {
+  push("/checkout")
+}
 
   return (
     <div className="absolute right-0 top-12 w-[320px] bg-white shadow-xl shadow-black/10 border border-gray-200 z-10">
@@ -54,7 +62,7 @@ const CartPopup = () => {
             <div className="text-primary text-xs">{priceFormatter(totalPrice)}</div>
         </div>
       </div>
-      <Button variant="dark" size="small" className="w-full flex items-center justify-center gap-2">
+      <Button variant="dark" size="small" className="w-full flex items-center justify-center gap-2" onClick={handleCheckout}>
         Checkout Now <FiArrowRight/>
       </Button>
     </div>
