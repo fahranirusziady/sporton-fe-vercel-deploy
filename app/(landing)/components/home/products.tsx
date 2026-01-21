@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../ui/button";
@@ -5,12 +7,24 @@ import { FiPlus } from "react-icons/fi";
 import priceFormatter from "@/app/utils/price-formatter";
 import { Product } from "@/app/types";
 import { getImageUrl } from "@/app/lib/api";
+import { useCartStore } from "@/app/hooks/use-cart-store";
 
 type TProductsProps = {
   products: Product[];
 };
 
 const ProductsSection = ({ products }: TProductsProps) => {
+  const { addItem } = useCartStore();
+
+  const handleAddToCart = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    product: Product
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+  };
+
   return (
     <section
       id="products-section"
@@ -28,7 +42,6 @@ const ProductsSection = ({ products }: TProductsProps) => {
             className="group"
           >
             <div className="p-1.5 bg-white hover:drop-shadow-xl duration-300">
-              {/* IMAGE */}
               <div className="bg-primary-light aspect-square w-full flex justify-center items-center relative">
                 <Image
                   src={getImageUrl(product.imageUrl)}
@@ -39,12 +52,14 @@ const ProductsSection = ({ products }: TProductsProps) => {
                   className="aspect-square object-contain"
                 />
 
-                <Button className="w-10 h-10 !p-2 absolute right-3 top-3">
+                <Button
+                  className="w-10 h-10 !p-2 absolute right-3 top-3"
+                  onClick={(e) => handleAddToCart(e, product)}
+                >
                   <FiPlus size={24} />
                 </Button>
               </div>
 
-              {/* INFO */}
               <h3 className="font-medium text-lg mb-1.5 mt-4">
                 {product.name}
               </h3>

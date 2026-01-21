@@ -1,33 +1,52 @@
-import CardWithHeader from "../ui/card-with-header";
+"use client";
 
-const OrderInformation = () => {
+import CardWithHeader from "../ui/card-with-header";
+import { CustomerInfo } from "@/app/hooks/use-cart-store";
+
+type Props = {
+  formData: CustomerInfo;
+  setFormData: React.Dispatch<React.SetStateAction<CustomerInfo>>;
+};
+
+const OrderInformation = ({ formData, setFormData }: Props) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <CardWithHeader title="Order Information">
       <div className="px-5 py-6 flex flex-col gap-4">
         <div className="input-group">
-          <label htmlFor="full_name">Full Name</label>
+          <label>Full Name</label>
           <input
-            type="text"
+            name="customerName"
+            value={formData.customerName}
+            onChange={handleChange}
             placeholder="Type your full name"
-            id="full_name"
           />
         </div>
 
         <div className="input-group">
-          <label htmlFor="wa_number">Whatsapp Number</label>
+          <label>Whatsapp Number</label>
           <input
-            type="text"
-            placeholder="Type your full whatsapp number"
-            id="wa_number"
+            name="customerContact"
+            value={formData.customerContact}
+            onChange={handleChange}
+            placeholder="Type your whatsapp number"
           />
         </div>
 
         <div className="input-group">
-          <label htmlFor="shipping_address">Shipping Address</label>
+          <label>Shipping Address</label>
           <textarea
-            id="shipping_address"
+            name="customerAddress"
+            rows={5}
+            value={formData.customerAddress}
+            onChange={handleChange}
             placeholder="Type your shipping address"
-            rows={7}
           />
         </div>
       </div>

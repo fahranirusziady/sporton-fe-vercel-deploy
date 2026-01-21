@@ -9,46 +9,49 @@ import {
 import Button from "../ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCartStore } from "@/app/hooks/use-cart-store";
+import { Product } from "@/app/types";
 
-const ProductActions = () => {
-  const {push} = useRouter();
+type TProductActionsProps = {
+  product: Product;
+  stock: number;
+};
+
+const ProductActions = ({ product, stock }: TProductActionsProps) => {
+  const { addItem } = useCartStore();
+  const { push } = useRouter();
   const [qty, setQty] = useState(1);
 
-  const Checkout =() => {
-
-  }
-
-  const incrementQty = () => {
-    setQty(prev => prev + 1);
+  const handleAddToCart = () => {
+    addItem(product, qty);
   };
 
-  const decrementQty = () => {
-    setQty(prev => Math.max(1, prev - 1));
+  const handleCheckout = () => {
+    push("/checkout");
   };
 
   return (
-    <div className="grid grid-cols-[auto_1fr_1fr] gap-6 w-full items-center">
-
+    <div className="flex gap-5 items-center">
       {/* Quantity */}
-      <div className="border border-gray-500 flex h-14 min-w-[72px]">
-        <div className="w-14 text-xl font-medium border-r border-gray-300 flex justify-center items-center">
+      <div className="border border-gray-500 inline-flex w-fit min-w-[82px]">
+        <div className="aspect-square text-xl font-medium border-r border-gray-500 flex justify-center items-center px-4">
           <span>{qty}</span>
         </div>
-
         <div className="flex flex-col w-10">
           <button
-            className="h-7 border-b border-gray-500 cursor-pointer flex items-center justify-center"
-            onClick={incrementQty}
+            className="h-7 border-b border-gray-500 flex items-center justify-center"
+            onClick={() =>
+              setQty((prev) => (prev < stock ? prev + 1 : prev))
+            }
           >
             <FiChevronUp size={16} />
           </button>
 
           <button
-            className={`h-7 flex items-center justify-center ${
-              qty === 1 ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
-            }`}
-            onClick={decrementQty}
-            disabled={qty === 1}
+            className="h-7 flex items-center justify-center"
+            onClick={() =>
+              setQty((prev) => (prev > 1 ? prev - 1 : prev))
+            }
           >
             <FiChevronDown size={16} />
           </button>
@@ -56,20 +59,19 @@ const ProductActions = () => {
       </div>
 
       {/* Add to Cart */}
-      <Button className="w-full h-14 flex items-center justify-center gap-3 text-base font-medium rounded-md">
-        <FiShoppingBag size={20} />
+      <Button
+        className="h-14 flex items-center gap-3"
+        onClick={handleAddToCart}
+      >
+        <FiShoppingBag />
         Add to Cart
       </Button>
 
       {/* Checkout */}
-      <Button
-        variant="dark"
-        className="w-full h-14 flex items-center justify-center gap-3 text-base font-medium rounded-md" onClick={() => push("/checkout")}
-      >
-        Checkout Now
-        <FiArrowRight size={20} />
+      <Button variant="dark" className="h-14" onClick={handleCheckout}>
+        Checkout
+        <FiArrowRight />
       </Button>
-
     </div>
   );
 };
