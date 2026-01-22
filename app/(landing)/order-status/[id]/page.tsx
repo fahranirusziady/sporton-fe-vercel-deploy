@@ -5,7 +5,7 @@ import { TPageProps } from "../../product/[id]/page";
 import OrderRejected from "../../components/order-status/order-rejected";
 
 const OrderStatus = async ({ params }: TPageProps) => {
-  const { id } = params; // ❌ NO await
+  const { id } = await params;
 
   const transaction = await getTransactionById(id);
 

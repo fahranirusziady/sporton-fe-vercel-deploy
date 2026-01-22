@@ -25,20 +25,32 @@ const PaymentSteps = () => {
       alert("Please upload your payment receipt!");
       return;
     }
-
     if (!customerInfo) {
       alert("Customer information is missing, please return to checkout");
       push("/checkout");
       return;
     }
 
+    const {
+      customerName,
+      customerContact,
+      customerAddress,
+    } = customerInfo;
+
+    if (!customerName || !customerContact || !customerAddress) {
+      alert("Incomplete customer information, please check again");
+      push("/checkout");
+      return;
+    }
+
     try {
       const formData = new FormData();
-      formData.append("customerName", customerInfo.customerName);
-      formData.append("customerContact", customerInfo.customerContact!.toString());
-      formData.append("customerAddress", customerInfo.customerAddress);
+
+      formData.append("customerName", customerName);
+      formData.append("customerContact", customerContact.toString());
+      formData.append("customerAddress", customerAddress);
       formData.append("image", file);
-      formData.append("totalPayment", totalPrice!.toString());
+      formData.append("totalPayment", totalPrice.toString());
 
       formData.append(
         "purchaseItems",
@@ -52,12 +64,9 @@ const PaymentSteps = () => {
 
       const res = await transactionCheckout(formData);
 
-     alert('Transaction created successfully!');
-     reset();
-     push(`/order-status/${res._id}`)
-
-      // simulasi success
-      push("/order-status/238473897598");
+      alert("Transaction created successfully!");
+      reset();
+      push(`/order-status/${res._id}`);
     } catch (error) {
       console.error(error);
       alert("Something went wrong during payment confirmation");
@@ -68,15 +77,9 @@ const PaymentSteps = () => {
     <CardWithHeader title="Payment Steps">
       <div className="p-5">
         <ol className="list-decimal text-xs pl-2 flex flex-col gap-4 mb-5">
-          <li>
-            Transfer the total amount to your preferred bank account.
-          </li>
-          <li>
-            After completing the transfer, keep the payment receipt.
-          </li>
-          <li>
-            Upload the receipt below to validate your transaction.
-          </li>
+          <li>Transfer the total amount to your preferred bank account.</li>
+          <li>After completing the transfer, keep the payment receipt.</li>
+          <li>Upload the receipt below to validate your transaction.</li>
         </ol>
 
         <FileUpload onFileSelect={setFile} />
@@ -86,9 +89,7 @@ const PaymentSteps = () => {
         <div className="flex justify-between font-semibold">
           <span className="text-sm">Total</span>
           <span className="text-primary text-sm">
-            {priceFormatter(
-            totalPrice
-            )}
+            {priceFormatter(totalPrice)}
           </span>
         </div>
 

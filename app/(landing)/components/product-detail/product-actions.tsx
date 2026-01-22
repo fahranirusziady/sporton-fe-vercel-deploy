@@ -23,10 +23,11 @@ const ProductActions = ({ product, stock }: TProductActionsProps) => {
   const [qty, setQty] = useState(1);
 
   const handleAddToCart = () => {
-    addItem(product, qty);
+    addItem(product);
   };
 
   const handleCheckout = () => {
+    addItem(product);
     push("/checkout");
   };
 

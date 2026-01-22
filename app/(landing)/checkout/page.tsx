@@ -12,7 +12,7 @@ const Checkout = () => {
 
   const [formData, setFormData] = useState<CustomerInfo>({
     customerName: "",
-    customerContact: "",
+    customerContact: null,
     customerAddress: "",
   });
 
@@ -21,13 +21,14 @@ const Checkout = () => {
 
     if (
       !customerName.trim() ||
-      !customerContact.trim() ||
+      !customerContact ||
       !customerAddress.trim()
     ) {
       alert("Please fill in all fields");
       return;
     }
-
+    
+    console.log(formData)
     setCustomerInfo(formData);
     router.push("/payment");
   };

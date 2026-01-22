@@ -15,6 +15,11 @@ export async function fetchAPI<T>(
 
   if (!res.ok) {
     let errorMessage = `Failed to fetch data ${endpoint}`;
+  if (!res.ok) {
+  const text = await res.text();
+  console.error(text);
+  throw new Error("Checkout failed");
+}
 
     try {
       const errorData = await res.json();
