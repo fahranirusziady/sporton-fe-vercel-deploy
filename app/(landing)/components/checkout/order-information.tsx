@@ -33,7 +33,7 @@ const OrderInformation = ({ formData, setFormData }: Props) => {
           <label>Whatsapp Number</label>
           <input
             name="customerContact"
-            value={formData.customerContact}
+            value={formData.customerContact ?? ""}
             onChange={handleChange}
             placeholder="Type your whatsapp number"
           />
