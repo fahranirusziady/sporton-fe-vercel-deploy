@@ -1,3 +1,6 @@
+// ==========================
+// Fetch API Helper
+// ==========================
 export async function fetchAPI<T>(
   endpoint: string,
   options?: RequestInit
@@ -14,12 +17,7 @@ export async function fetchAPI<T>(
   });
 
   if (!res.ok) {
-    let errorMessage = `Failed to fetch data ${endpoint}`;
-  if (!res.ok) {
-  const text = await res.text();
-  console.error(text);
-  throw new Error("Checkout failed");
-}
+    let errorMessage = `Failed to fetch ${endpoint}`;
 
     try {
       const errorData = await res.json();
@@ -28,7 +26,7 @@ export async function fetchAPI<T>(
         errorData?.error ||
         errorMessage;
     } catch {
-      // ignore JSON parse error
+      // ignore non-JSON error
     }
 
     throw new Error(errorMessage);
@@ -41,16 +39,20 @@ export async function fetchAPI<T>(
 // Image URL Helper
 // ==========================
 export function getImageUrl(path?: string): string {
-  // fallback kalau kosong
   if (!path) {
     return "/images/categories/placeholder.png";
   }
 
-  // kalau sudah full URL
   if (path.startsWith("http")) {
     return path;
   }
 
-  // kalau cuma filename / relative path dari API
   return `${process.env.NEXT_PUBLIC_API_ROOT}/${path}`;
+}
+
+export function getAuthHeaders() {
+  const token = localStorage.getItem("token");
+  return {
+    Authorization: `Bearer ${token}`
+  };
 }

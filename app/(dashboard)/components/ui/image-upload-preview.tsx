@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useRef } from "react";
 import { FiUploadCloud } from "react-icons/fi";
@@ -34,12 +36,13 @@ const ImageUploadPreview = ({
         </label>
       )}
 
+      {/* Aspect ratio container 1:1 */}
       <div
         onClick={handleClick}
         className="
           relative
-          h-full
           w-full
+          aspect-square
           cursor-pointer
           rounded-lg
           border-2
@@ -64,9 +67,7 @@ const ImageUploadPreview = ({
         ) : (
           <div className="flex flex-col items-center gap-2 text-primary">
             <FiUploadCloud size={28} />
-            <span className="text-sm font-medium">
-              Click to Upload
-            </span>
+            <span className="text-sm font-medium">Click to Upload</span>
           </div>
         )}
 
